@@ -9,10 +9,6 @@ echo "Enter the block hash at height 0."
 
 read HASH
 
-sed -i 's\<blockhash>\$HASH\g' project.yaml
-
-sed -i 's\<ws-endpoint>\$WS\g' project.yaml
-
 # Check if npm is installed and install it if not
 
 if ! command -v npm &> /dev/null ; then
@@ -45,6 +41,10 @@ fi
 
 git clone https://github.com/availproject/avail-indexer.git ~/avail-indexer
 cd ~/avail-indexer
+
+sed -i 's\<blockhash>\$HASH\g' project.yaml
+
+sed -i 's\<ws-endpoint>\$WS\g' project.yaml
 
 exit
 
