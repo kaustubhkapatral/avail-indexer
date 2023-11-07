@@ -1,6 +1,20 @@
 #!/bin/bash
 
+# Taking user input for weboscket and hash
+echo "Enter the websocket endpoint of the network"
+
+read WS
+
+echo "Enter the block hash at height 0."
+
+read HASH
+
+sed -i 's\<blockhash>\$HASH\g' project.yaml
+
+sed -i 's\<ws-endpoint>\$WS\g' project.yaml
+
 # Check if npm is installed and install it if not
+
 if ! command -v npm &> /dev/null ; then
   echo "npm or node is not installed. Installing..."
   sudo apt-get install -y ca-certificates curl gnupg
@@ -31,19 +45,6 @@ fi
 
 git clone https://github.com/availproject/avail-indexer.git ~/avail-indexer
 cd ~/avail-indexer
-
-# Taking user input for weboscket and hash
-echo "Enter the websocket endpoint of the network"
-
-read WS
-
-echo "Enter the block hash at height 0."
-
-read HASH
-
-sed -i 's\<blockhash>\$HASH\g' project.yaml
-
-sed -i 's\<ws-endpoint>\$WS\g' project.yaml
 
 exit
 
