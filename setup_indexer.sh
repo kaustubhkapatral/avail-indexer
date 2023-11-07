@@ -1,11 +1,20 @@
 #!/bin/bash
 
+function color() {
+    # Usage: color "31;5" "string"
+    # Some valid values for color:
+    # - 5 blink, 1 strong, 4 underlined
+    # - fg: 31 red,  32 green, 33 yellow, 34 blue, 35 purple, 36 cyan, 37 white
+    # - bg: 40 black, 41 red, 44 blue, 45 purple
+    printf '\033[%sm%s\033[0m\n' "$@"
+}
+
 # Taking user input for weboscket and hash
-echo "Enter the websocket endpoint of the network"
+color "33" "Enter the websocket endpoint of the network"
 
 read WS
 
-echo "Enter the block hash at height 0."
+color "33" "Enter the block hash at height 0."
 
 read HASH
 
@@ -42,9 +51,10 @@ fi
 git clone https://github.com/kaustubhkapatral/avail-indexer.git ~/avail-indexer
 cd ~/avail-indexer
 git checkout kappa/fixes
-sed -i 's\<blockhash>\$HASH\g' project.yaml
 
-sed -i 's\<ws-endpoint>\$WS\g' project.yaml
+sed -i "s/<blockhash>/$HASH/g" project.yaml
+
+sed -i "s@<ws-endpoint>@$WS@g" project.yaml
 
 exit
 
