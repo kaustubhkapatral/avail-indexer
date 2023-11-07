@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if npm is installed and install it if not
-if ! command -v node &> /dev/null && command -v npm &> /dev/null ; then
+if ! command -v npm &> /dev/null ; then
   echo "npm or node is not installed. Installing..."
   sudo apt-get install -y ca-certificates curl gnupg
   sudo mkdir -p /etc/apt/keyrings
