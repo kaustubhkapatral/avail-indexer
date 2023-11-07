@@ -36,12 +36,12 @@ if ! command -v docker &> /dev/null; then
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update
-  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 fi
 
-git clone https://github.com/availproject/avail-indexer.git ~/avail-indexer
+git clone https://github.com/kaustubhkapatral/avail-indexer.git ~/avail-indexer
 cd ~/avail-indexer
-
+git checkout kappa/fixes
 sed -i 's\<blockhash>\$HASH\g' project.yaml
 
 sed -i 's\<ws-endpoint>\$WS\g' project.yaml
