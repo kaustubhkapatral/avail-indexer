@@ -56,6 +56,14 @@ sed -i "s/<blockhash>/$HASH/g" project.yaml
 
 sed -i "s@<ws-endpoint>@$WS@g" project.yaml
 
+crontab -l > ~/mycron
+
+echo "* * * * * bash /home/ubuntu/avail-indexer/autorestart.sh" >> ~/mycron
+
+crontab ~/mycron
+
+rm mycron
+
 exit
 
 # Install npm dependencies
