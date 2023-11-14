@@ -56,27 +56,17 @@ sed -i "s/<blockhash>/$HASH/g" project.yaml
 
 sed -i "s@<ws-endpoint>@$WS@g" project.yaml
 
-crontab -l > ~/mycron
-
-echo "* * * * * bash /home/ubuntu/avail-indexer/autorestart.sh" >> ~/mycron
-
-crontab ~/mycron
-
-rm mycron
-
-exit
-
 # Install npm dependencies
 echo "Installing npm dependencies..."
-npm install
+sudo npm install
 
 # Generate code
 echo "Generating code..."
-npm run codegen
+sudo npm run codegen
 
 # Build the project
 echo "Building the project..."
-npm run build
+sudo npm run build
 
 # Pull Docker images
 echo "Pulling Docker images..."
@@ -85,4 +75,13 @@ sudo docker compose pull
 # Start Docker containers
 echo "Starting Docker containers..."
 sudo docker compose up -d
+
+# Setting up cron job
+crontab -l > ~/mycron
+
+echo "* * * * * bash /home/ubuntu/avail-indexer/autorestart.sh" >> ~/mycron
+
+crontab ~/mycron
+
+rm ~/mycron
 
