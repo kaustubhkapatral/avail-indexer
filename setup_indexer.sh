@@ -9,12 +9,12 @@ function color() {
     printf '\033[%sm%s\033[0m\n' "$@"
 }
 
-# Taking user input for weboscket and hash
-color "33" "Enter the websocket endpoint of the network"
+# Taking user input for websocket and genesis hash
+color "33" "Enter the websocket endpoint of the network you want to deploy the indexer for:"
 
 read WS
 
-color "33" "Enter the block hash at height 0."
+color "33" "Enter the hash of block height 0 ie. genesis hash:"
 
 read HASH
 
@@ -30,11 +30,13 @@ if ! command -v npm &> /dev/null ; then
   sudo apt-get install nodejs -y
 fi
 
+# Check if subql package is installed and install it if not
 if ! command -v subql &> /dev/null; then
   echo "@subql/cli is not installed. Installing @subql/cli..."
   sudo npm install -g @subql/cli
 fi
 
+# Check if docker is installed and install it if not
 if ! command -v docker &> /dev/null; then
   echo "Docker is not installed. Installing..."
   sudo install -m 0755 -d /etc/apt/keyrings
@@ -48,10 +50,11 @@ if ! command -v docker &> /dev/null; then
   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 fi
 
+# Cloning the indexer repo
 git clone https://github.com/kaustubhkapatral/avail-indexer.git ~/avail-indexer
 cd ~/avail-indexer
-git checkout kappa/fixes
 
+# Changing values of genesis hash and ws endpoint in project.yaml file
 sed -i "s/<blockhash>/$HASH/g" project.yaml
 
 sed -i "s@<ws-endpoint>@$WS@g" project.yaml
@@ -76,7 +79,7 @@ sudo docker compose pull
 echo "Starting Docker containers..."
 sudo docker compose up -d
 
-# Setting up cron job
+# Setting up cron job for container autorestart script
 crontab -l > ~/mycron
 
 echo "* * * * * bash /home/ubuntu/avail-indexer/autorestart.sh" >> ~/mycron
